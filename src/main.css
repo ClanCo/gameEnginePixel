@@ -1,0 +1,197 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --game-viewport-width: 180px;
+  --game-viewport-height: 180px;
+  --game-cell-size: 16px;
+  --pixel-size: 1;
+  --ui-popup-z-index: 500;
+}
+
+body,
+html {
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  position: relative;
+  width: 100vw;
+}
+
+canvas {
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+@media (min-width: 360px) {
+  :root {
+    --pixel-size: 3;
+  }
+}
+
+/* !*4x*!*/
+/*!* 5x *!*/
+/*!* 6x *!*/
+/*!* 7x *!*/
+.RenderLevel_fullScreenContainer {
+  align-items: center;
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  position: absolute;
+}
+
+.RenderLevel_gameScreen {
+  height: var(--game-viewport-height);
+  -webkit-transform: scale(var(--pixel-size));
+  transform: scale(var(--pixel-size));
+  width: var(--game-viewport-width);
+}
+
+.Hero_hero {
+  pointer-events: none;
+  position: relative;
+}
+
+.Hero_heroBody {
+  left: -8px;
+  position: absolute;
+  top: -19px;
+}
+
+.ElevatedSprite_elevatedSprite {
+  position: relative;
+}
+
+.ElevatedSprite_bodyContainer-T {
+  left: 0;
+  position: absolute;
+  top: 0;
+}
+
+.CiabattaBody_ciabatta {
+  position: relative;
+}
+
+.CiabattaBody_ciabattaBody {
+  left: -16px;
+  position: absolute;
+  top: -33px;
+}
+
+.PopupMessage_outerContainer {
+  align-items: center;
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  position: absolute;
+  z-index: var(--ui-popup-z-index);
+}
+
+.PopupMessage_popupContainer {
+  position: relative;
+}
+
+.PopupMessage_quietButton {
+  -webkit-appearance: none;
+  appearance: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: 0;
+  padding: 0;
+}
+
+.PopupMessage_quietButton:active {
+  position: relative;
+  top: 1px;
+}
+
+.PopupMessage_deathTypeContainer {
+  align-items: center;
+  display: flex;
+  height: 38px;
+  justify-content: center;
+  left: 4px;
+  position: absolute;
+  top: 18px;
+  width: 42px;
+}
+
+.TopHud_topHud {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 4px;
+}
+
+.TopHud_topHudLeft {
+  display: flex;
+  gap: 2px;
+  -webkit-transform: scale(var(--pixel-size));
+  transform: scale(var(--pixel-size));
+  -webkit-transform-origin: top left;
+  transform-origin: top left;
+}
+
+.TopHud_topHudRight {
+  display: flex;
+  gap: 2px;
+}
+
+.FlourCount_flourCount {
+  align-items: center;
+  display: flex;
+}
+
+.PixelNumber_pixelNumber {
+  display: flex;
+}
+
+.PixelNumber_svgCharacter {
+  display: block;
+  width: 5px;
+}
+
+.ClockCount_clockCount {
+  align-items: center;
+  display: flex;
+  gap: 1px;
+}
+
+.InventoryList_inventory {
+  display: flex;
+}
+
+.InventoryList_inventoryEntry {
+  display: flex;
+  gap: 1px;
+}
+
+.EditorDropdown_dropdownContainer {
+  display: flex;
+  gap: 1rem;
+}
+
+.EditorDropdown_dropdownContainer button,
+.EditorDropdown_dropdownContainer select {
+  background: transparent;
+  border: 2px solid #fff;
+  border-radius: 4px;
+  color: #fff;
+  padding: 0.5rem 1rem;
+}
+
+.EditorDropdown_dropdownContainer button:active {
+  border-color: #adff2f;
+  color: #adff2f;
+  position: relative;
+  top: 1px;
+}
+
+/*# sourceMappingURL=main.177cfaec.css.map*/
