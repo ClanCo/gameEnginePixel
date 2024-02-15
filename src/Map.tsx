@@ -16,7 +16,34 @@ const colors = [
 export default function Map() {
   const [rect, setRect] = useState({ row: 10, col: 14 });
   const [clickedTile, setClickedTile] = useState(null);
+  const [positionPlayer, setPositionPlayer] = useState({ row: 0, col: 0 });
   const divRef = useRef(null);
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      switch (event.key) {
+        case 'ArrowUp':
+          setPositionPlayer((prevPos) => ({ ...prevPos, col: prevPos.col - 1 }));
+          break;
+        case 'ArrowDown':
+          setPositionPlayer((prevPos) => ({ ...prevPos, col: prevPos.col + 1 }));
+          break;
+        case 'ArrowLeft':
+          setPositionPlayer((prevPos) => ({ ...prevPos, row: prevPos.row - 1 }));
+          break;
+        case 'ArrowRight':
+          setPositionPlayer((prevPos) => ({ ...prevPos, row: prevPos.row + 1 }));
+          break;
+        default:
+          break;
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   useEffect(() => {
     const updateCanvasPositions = () => {
@@ -62,6 +89,11 @@ export default function Map() {
           <canvas className="w-[16px] h-[16px]" />
         </div>
       ))}
+      <div
+        id="player"
+        className="absolute bg-black rounded-full z-10 w-[16px] h-[16px]"
+        style={{ top: positionPlayer.col * 16, left: positionPlayer.row * 16 }}
+      ></div>
     </div>
   );
 }
