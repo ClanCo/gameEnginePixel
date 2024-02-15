@@ -47,8 +47,6 @@ export default function Map() {
 
   useEffect(() => {
     const updateCanvasPositions = () => {
-      const divWidth = divRef.current.offsetWidth;
-      const divHeight = divRef.current.offsetHeight;
       const canvasWidth = 16; // Tile width
       const canvasHeight = 16; // Tile height
 
