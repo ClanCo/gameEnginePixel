@@ -79,21 +79,27 @@ export default function Map() {
   };
 
   return (
-    <div className="relative" style={{ transform: 'translate3D(8px, 8px, 0px)' }} ref={divRef}>
-      {Array.from({ length: rect.row * rect.col }).map((_, index) => (
-        <div
-          className={`absolute tile ${clickedTile === index ? 'bg-blue-600' : colors[index % colors.length]}`}
-          key={index}
-          onClick={() => handleClick(index)}
-        >
-          <canvas className="w-[16px] h-[16px]" />
+    <>
+      <div className="relative border-4 border-black overflow-hidden" style={{ width: '200px', height: '200px' }}>
+        <div className="absolute" style={{ top: -positionPlayer.col * 16, left: -positionPlayer.row * 16 }}>
+          <div className="relative" style={{ transform: 'translate3D(8px, 8px, 0px)' }} ref={divRef}>
+            {Array.from({ length: rect.row * rect.col }).map((_, index) => (
+              <div
+                className={`absolute tile ${clickedTile === index ? 'bg-blue-600' : colors[index % colors.length]}`}
+                key={index}
+                onClick={() => handleClick(index)}
+              >
+                <canvas className="w-[16px] h-[16px]" />
+              </div>
+            ))}
+          </div>
         </div>
-      ))}
+      </div>
       <div
         id="player"
-        className="absolute bg-black rounded-full z-10 w-[16px] h-[16px]"
-        style={{ top: positionPlayer.col * 16, left: positionPlayer.row * 16 }}
+        className="absolute bg-black rounded-full w-[16px] h-[16px]"
+        style={{ top: '92px', left: '92px' }}
       ></div>
-    </div>
+    </>
   );
 }
