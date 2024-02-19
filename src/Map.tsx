@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import GameEngine from './components/GameEngine';
 
 const colors = [
   'bg-blue-600',
@@ -14,66 +15,55 @@ const colors = [
 ];
 
 export default function Map() {
-  const [rect, setRect] = useState({ row: 10, col: 14 });
   const [clickedTile, setClickedTile] = useState(null);
   const [positionPlayer, setPositionPlayer] = useState({ row: 0, col: 0 });
-  const divRef = useRef(null);
+  const [gameEngine, setGameEngine] = useState<GameEngine | null>(null);
+  const divRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleKeyDown = (event) => {
-      switch (event.key) {
-        case 'ArrowUp':
-          setPositionPlayer((prevPos) => ({ ...prevPos, col: prevPos.col - 1 }));
-          break;
-        case 'ArrowDown':
-          setPositionPlayer((prevPos) => ({ ...prevPos, col: prevPos.col + 1 }));
-          break;
-        case 'ArrowLeft':
-          setPositionPlayer((prevPos) => ({ ...prevPos, row: prevPos.row - 1 }));
-          break;
-        case 'ArrowRight':
-          setPositionPlayer((prevPos) => ({ ...prevPos, row: prevPos.row + 1 }));
-          break;
-        default:
-          break;
+    const rows = 18;
+    const cols = 15;
+
+    const engine = new GameEngine(rows, cols, 16, 16);
+    setGameEngine(engine);
+
+    return () => {
+      // Nettoyage à la sortie
+    };
+  }, []);
+
+  useEffect(() => {
+    // Gestion des mouvements du joueur
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (gameEngine) {
+        gameEngine.movePlayer(event.key);
+        setPositionPlayer(gameEngine.playerPosition);
       }
     };
+
     window.addEventListener('keydown', handleKeyDown);
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [gameEngine]);
 
-  useEffect(() => {
-    const updateCanvasPositions = () => {
-      const canvasWidth = 16; // Tile width
-      const canvasHeight = 16; // Tile height
+  const renderTiles = () => {
+    if (!gameEngine) return null;
 
-      // Update canvas positions based on rect
-      const canvasElements = divRef.current.querySelectorAll('.tile');
-      canvasElements.forEach((canvas, index) => {
-        const row = Math.floor(index / rect.col);
-        const col = index % rect.col;
-        const left = col * canvasWidth;
-        const top = row * canvasHeight;
-        canvas.style.left = `${left}px`;
-        canvas.style.top = `${top}px`;
-      });
-    };
-
-    updateCanvasPositions();
-
-    window.addEventListener('resize', updateCanvasPositions);
-
-    return () => {
-      window.removeEventListener('resize', updateCanvasPositions);
-    };
-  }, [rect]);
-
-  const handleClick = (index) => {
-    setClickedTile(index);
-    console.log(index);
+    return gameEngine.tiles.map((row, rowIndex) => (
+      <div key={rowIndex} className="flex">
+        {row.map((tile, colIndex) => (
+          <div
+            key={`${rowIndex}-${colIndex}`}
+            className={`absolute tile ${colors[Math.floor(Math.random() * colors.length)]}`}
+            style={{ top: rowIndex * 16, left: colIndex * 16 }}
+          >
+            <canvas className="w-[16px] h-[16px]"> </canvas>
+          </div>
+        ))}
+      </div>
+    ));
   };
 
   return (
@@ -81,15 +71,7 @@ export default function Map() {
       <div className="relative border-4 border-black overflow-hidden" style={{ width: '200px', height: '200px' }}>
         <div className="absolute" style={{ top: -positionPlayer.col * 16, left: -positionPlayer.row * 16 }}>
           <div className="relative" style={{ transform: 'translate3D(8px, 8px, 0px)' }} ref={divRef}>
-            {Array.from({ length: rect.row * rect.col }).map((_, index) => (
-              <div
-                className={`absolute tile ${clickedTile === index ? 'bg-blue-600' : colors[index % colors.length]}`}
-                key={index}
-                onClick={() => handleClick(index)}
-              >
-                <canvas className="w-[16px] h-[16px]" />
-              </div>
-            ))}
+            {renderTiles()}
           </div>
         </div>
       </div>
